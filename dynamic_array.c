@@ -40,7 +40,7 @@ void* get_dynamic_array_element(dynamic_array* array, size_t index) {
     }
     return (char*)array->data + index * array->element_size;
 }
-
+#if defined(TEST)
 int main() {
     // 创建一个存储整数的动态数组
     dynamic_array* int_array = create_dynamic_array(sizeof(int));
@@ -68,3 +68,5 @@ int main() {
 
     return 0;
 }
+#endif
+
