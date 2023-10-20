@@ -40,6 +40,18 @@ void* get_dynamic_array_element(dynamic_array* array, size_t index) {
     }
     return (char*)array->data + index * array->element_size;
 }
+
+void traverse_dynamic_array(dynamic_array* array, void (*process_element)(void*)) {
+    for (size_t i = 0; i < array->size; i++) {
+        void* element = get_dynamic_array_element(array, i);
+        process_element(element);
+    }
+}
+
+size_t calculate_total_size(dynamic_array* array) {
+    return array->size * array->element_size;
+}
+
 #if defined(TEST)
 int main() {
     // 创建一个存储整数的动态数组
