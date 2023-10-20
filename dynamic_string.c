@@ -83,33 +83,6 @@ int find_substring(dynamic_string* str, const void* substring) {
     return -1;  // Substring not found
 }
 
-// void tokenize_string(dynamic_string* str, const void* delimiter, int (*is_delimiter)(wint_t)) {
-//     void* token;
-//     void** tokens = NULL;
-//     size_t count = 0;
-
-//     if (str->is_wide) {
-//         token = wcstok((wchar_t*)str->data, (const wchar_t*)delimiter, is_delimiter);
-//     } else {
-//         token = strtok((char*)str->data, (const char*)delimiter);
-//     }
-
-//     while (token != NULL) {
-//         tokens = realloc(tokens, (count + 1) * sizeof(void*));
-//         tokens[count] = token;
-//         count++;
-
-//         if (str->is_wide) {
-//             token = wcstok(NULL, (const wchar_t*)delimiter, is_delimiter);
-//         } else {
-//             token = strtok(NULL, (const char*)delimiter);
-//         }
-//     }
-
-//     str->data = tokens;
-//     str->length = count;
-// }
-
 void split_string(dynamic_string* str, const void* delimiter, size_t* num_tokens, void*** tokens) {
     void* token;
     void** temp_tokens = NULL;
@@ -166,52 +139,6 @@ void split_string(dynamic_string* str, const void* delimiter, size_t* num_tokens
     *num_tokens = count;
 }
 
-
-// void replace_substring(dynamic_string* str, const void* old_substring, const void* new_substring) {
-//     size_t old_substring_length = str->is_wide ? wcslen((const wchar_t*)old_substring) : strlen((const char*)old_substring);
-//     size_t new_substring_length = str->is_wide ? wcslen((const wchar_t*)new_substring) : strlen((const char*)new_substring);
-
-//     const void* result = NULL;
-
-//     if (str->is_wide) {
-//         result = wcsstr((const wchar_t*)str->data, (const wchar_t*)old_substring);
-//     } else {
-//         result = strstr((const char*)str->data, (const char*)old_substring);
-//     }
-
-//     dynamic_string* temp_str = create_dynamic_string(str->is_wide);
-//     while (result != NULL) {
-//         append_dynamic_string(temp_str, str->data);  // 保存当前处理的位置之前的字符串
-
-//         // 追加新的子字符串
-//         if (str->is_wide) {
-//             append_dynamic_string(temp_str, new_substring);
-//         } else {
-//             append_dynamic_string(temp_str, new_substring);
-//         }
-
-//         // 移动到下一个子字符串
-//         if (str->is_wide) {
-//             result += old_substring_length;
-//             result = wcsstr((const wchar_t*)result, (const wchar_t*)old_substring);
-//         } else {
-//             result += old_substring_length;
-//             result = strstr((const char*)result, (const char*)old_substring);
-//         }
-//     }
-
-//     // 追加最后一个子字符串之后的部分
-//     append_dynamic_string(temp_str, result);
-
-//     // 更新原始字符串
-//     destroy_dynamic_string(str);
-//     str->data = temp_str->data;
-//     str->capacity = temp_str->capacity;
-//     str->length = temp_str->length;
-
-//     // 释放临时字符串
-//     free(temp_str);
-// }
 
 void replace_substring(dynamic_string* str, const void* old_substring, const void* new_substring) {
     size_t old_substring_length = 0;
