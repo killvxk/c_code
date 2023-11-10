@@ -1,13 +1,13 @@
-#include <limits.h>
+#include <climits>
 
-int isdigit(int ch)
+int xisdigit(const int ch)
 {
 	return (ch >= '0') && (ch <= '9');
 }
 
-int isxdigit(int ch)
+int isxdigit(const int ch)
 {
-	if (isdigit(ch))
+	if (xisdigit(ch))
 		return true;
 
 	if ((ch >= 'a') && (ch <= 'f'))
@@ -16,40 +16,39 @@ int isxdigit(int ch)
 	return (ch >= 'A') && (ch <= 'F');
 }
 
-char _tolower(const char c)
+char xtolower(const char c)
 {
 	return c | 0x20;
 }
 
-const char *_parse_integer_fixup_radix(const char *s, unsigned int *base)
+const char *parse_integer_fixup_radix(const char *s, unsigned int *base)
 {
 	if (*base == 0) {
 		if (s[0] == '0') {
-			if (_tolower(s[1]) == 'x' && isxdigit(s[2]))
+			if (xtolower(s[1]) == 'x' && isxdigit(s[2]))
 				*base = 16;
 			else
 				*base = 8;
 		} else
 			*base = 10;
 	}
-	if (*base == 16 && s[0] == '0' && _tolower(s[1]) == 'x')
+	if (*base == 16 && s[0] == '0' && xtolower(s[1]) == 'x')
 		s += 2;
 	return s;
 }
 
-unsigned long long _strtoull(const char *nptr, char **endptr, unsigned int base) {
-    const char *s = _parse_integer_fixup_radix(nptr, &base);
+unsigned long long xstrtoull(const char *nptr, char **endptr, unsigned int base) {
+    const char *s = parse_integer_fixup_radix(nptr, &base);
     unsigned long long acc;
-    unsigned char c;
-    unsigned long long cutoff = ULLONG_MAX / base;
-    unsigned long long cutlim = ULLONG_MAX % base;
+    const unsigned long long cutoff = ULLONG_MAX / base;
+    const unsigned long long cutlim = ULLONG_MAX % base;
     int any = 0;
 
     for (acc = 0;; s++) {
-        c = _tolower(*s);
+        unsigned char c = xtolower(*s);
         if (!isxdigit(c))
             break;
-        if (isdigit(c))
+        if (xisdigit(c))
             c -= '0';
         else
             c -= 'a' - 10;
@@ -68,9 +67,8 @@ unsigned long long _strtoull(const char *nptr, char **endptr, unsigned int base)
         acc = ULLONG_MAX;
     }
 
-    if (endptr != 0)
-        *endptr = (char *)(any ? s : nptr);
+    if (nullptr != endptr)
+        *endptr = const_cast<char*>(any ? s : nptr);
 
     return acc;
 }
-
